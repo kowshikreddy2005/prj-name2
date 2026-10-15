@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Prediction of Remaining Useful Life for AeroEngines using Machine Learning" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap & Template CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-space-dynamic.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animated.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.css') }}">
+
+  <title>Upload Dataset │ RUL Prediction</title>
+
+  <style>
+    /* Navbar Button */
+    .nav .btn-nav a {
+      background: #ff6b6b;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 25px;
+      transition: 0.3s ease;
+    }
+
+    .nav .btn-nav a:hover {
+      background: #ff4757;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0a0a23;
+      color: #ccc;
+      font-size: 14px;
+      padding: 20px 0;
+      border-top: 2px solid #ff6b6b;
+      text-align: center;
+    }
+
+    /* Upload Box */
+    .upload-box {
+      background: rgba(255, 255, 255, 0.97);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .upload-box h2 {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-align: center;
+      color: #222;
+    }
+
+    .upload-box p {
+      font-size: 15px;
+      text-align: center;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .btn-upload {
+      display: block;
+      width: 100%;
+      background: #ff6b6b;
+      color: #fff;
+      padding: 12px;
+      border-radius: 25px;
+      font-size: 16px;
+      border: none;
+      transition: 0.3s ease;
+    }
+
+    .btn-upload:hover {
+      background: #ff4757;
+    }
+
+    .message {
+      background: #d1e7dd;
+      color: #0f5132;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Dataset Table */
+    .table-preview {
+      margin-top: 60px;
+    }
+
+    .table-preview h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background: #f2f2f2;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background: #fafafa;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ***** Header Area ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- Logo -->
+            <a href="{{ url_for('index') }}" class="logo">
+              <h4>RUL <span>Prediction</span></h4>
+            </a>
+
+            <!-- Menu -->
+            <ul class="nav">
+              <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+              <li><a href="{{ url_for('upload') }}">Upload</a></li>
+              <li><a href="{{ url_for('model') }}">Model</a></li>
+              <li><a href="{{ url_for('prediction') }}">Prediction</a></li>
+              <li class="btn-nav"><a href="{{ url_for('index2') }}">Logout</a></li>
+            </ul>
+
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header End ***** -->
+
+  <!-- ***** Upload Section ***** -->
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-8">
+          <div class="upload-box wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.7s">
+            {% if msg %}
+            <div class="message">{{ msg }}</div>
+            {% endif %}
+            <h2>Upload AeroEngine Dataset</h2>
+            <p>
+              Please upload your CSV dataset containing engine sensor readings and operational history.
+              This data will be used to predict the <strong>Remaining Useful Life (RUL)</strong> of aeroengines,
+              improving safety, maintenance scheduling, and performance optimization.
+            </p>
+            <form method="POST" enctype="multipart/form-data">
+              <input type="file" name="file" accept=".csv" class="form-control mb-3" required />
+              <button type="submit" class="btn-upload">Upload Dataset</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ***** Dataset Preview ***** -->
+  {% if rows %}
+  <section class="table-preview">
+    <div class="container">
+      <h3>📊 Uploaded Dataset Preview</h3>
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              {% for c in columns %}
+              <th>{{ c }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+            <tr>
+              {% for j in r %}
+              <td>{{ j }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ***** Footer ***** -->
+  <footer>
+    &copy; 2026 RUL Prediction Project. All Rights Reserved.
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/owl-carousel.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/animation.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/imagesloaded.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+</body>
+
+</html>

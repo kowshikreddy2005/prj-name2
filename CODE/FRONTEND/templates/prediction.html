@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description"
+        content="Prediction of Remaining Useful Life for AeroEngines using Machine Learning" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap & Template CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-space-dynamic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animated.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.css') }}">
+
+    <title>Prediction │ AeroEngine RUL</title>
+
+    <style>
+        /* Background with Overlay */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://media.istockphoto.com/id/2176545110/photo/part-of-a-black-propeller-white-light-aircraf-screws-texture-surface-close-up.jpg?s=612x612&w=0&k=20&c=F6-qQ49ZYbaqmrE7ffsV8xdlOa9ei_dQre4uiRiru5I=')
+                no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            color: #fff;
+        }
+
+        /* Slightly lighter overlay to see more background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.5);
+            z-index: -1;
+        }
+
+        /* Navbar Button */
+        .nav .btn-nav a {
+            background: #ff6b6b;
+            color: #fff !important;
+            padding: 8px 18px;
+            border-radius: 25px;
+            transition: 0.3s ease;
+        }
+
+        .nav .btn-nav a:hover {
+            background: #ff4757;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(10, 10, 35, 0.8);
+            color: #ccc;
+            font-size: 14px;
+            padding: 20px 0;
+            border-top: 2px solid #ff6b6b;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Prediction Box */
+        .prediction-box {
+            background: rgba(255, 255, 255, 0.85); /* More transparent */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+            max-width: 900px;
+            margin: auto;
+            color: #222;
+        }
+
+        .prediction-box h2 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #222;
+        }
+
+        .prediction-box p {
+            font-size: 15px;
+            text-align: center;
+            color: #444;
+            margin-bottom: 25px;
+        }
+
+        .btn-predict {
+            display: block;
+            width: 100%;
+            background: #ff6b6b;
+            color: #fff;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 16px;
+            border: none;
+            transition: 0.3s ease;
+        }
+
+        .btn-predict:hover {
+            background: #ff4757;
+        }
+
+        .message {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            background: #fde8e8;
+            color: #b00020;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Prediction Result Styling */
+        .result-box {
+            background: #f9f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .result-box strong {
+            color: #222;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ***** Header Area ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- Logo -->
+                        <a href="{{ url_for('index') }}" class="logo">
+                            <h4>AeroEngine <span>RUL Prediction</span></h4>
+                        </a>
+
+                        <!-- Menu -->
+                        <ul class="nav">
+                            <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                            <li><a href="{{ url_for('upload') }}">Upload</a></li>
+                            <li><a href="{{ url_for('model') }}">Model</a></li>
+                            <li><a href="{{ url_for('prediction') }}">Prediction</a></li>
+                            <li class="btn-nav"><a href="{{ url_for('index2') }}">Logout</a></li>
+                        </ul>
+
+                        <a class="menu-trigger"><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header End ***** -->
+
+    <!-- ***** Prediction Section ***** -->
+    <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <div class="prediction-box wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.7s">
+
+                        {% if predicted_beam %}
+                        <div class="result-box">
+                            <strong>Predicted Remaining Useful Life (RUL):</strong> {{ predicted_beam }} cycles <br>
+                            <strong>Probability:</strong> {{ probability }} <br>
+                            <strong>Description:</strong> {{ description }}
+                        </div>
+                        {% endif %}
+
+                        {% if error %}
+                        <div class="error-message">
+                            {{ error }}
+                        </div>
+                        {% endif %}
+
+                        <h2>Prediction of Remaining Useful Life</h2>
+                        <p>Enter the sensor readings and cycle data below to estimate the <strong>Remaining Useful Life
+                                (RUL)</strong> of the AeroEngine.</p>
+
+                        <form method="POST" action="/prediction">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="cycle" placeholder="cycle" class="form-control" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_1" placeholder="sensor_1" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_2" placeholder="sensor_2" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_3" placeholder="sensor_3" class="form-control"
+                                        required>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_4" placeholder="sensor_4" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_7" placeholder="sensor_7" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_8" placeholder="sensor_8" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_12" placeholder="sensor_12" class="form-control"
+                                        required>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_14" placeholder="sensor_14" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_15" placeholder="sensor_15" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_18" placeholder="sensor_18" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <input type="text" name="sensor_19" placeholder="sensor_19" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-predict">Predict</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ***** Footer ***** -->
+    <footer>
+        &copy; 2026 AeroEngine RUL Prediction Project. All Rights Reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/animation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/imagesloaded.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="About the RUL Prediction Project" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap & Template CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-space-dynamic.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animated.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.css') }}">
+
+  <title>About - RUL Prediction</title>
+  <style>
+    /* Navbar Login Button */
+    .nav .login-btn a {
+      background: #ff6b6b;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 25px;
+      transition: 0.3s ease;
+    }
+
+    .nav .login-btn a:hover {
+      background: #ff4757;
+    }
+
+    /* Footer Styling */
+    footer {
+      background-color: #0a0a23;
+      color: #ccc;
+      font-size: 14px;
+      padding: 20px 0;
+      border-top: 2px solid #ff6b6b;
+      text-align: center;
+    }
+
+    /* About Section Styling with Background */
+    .about-section {
+      min-height: 90vh;
+      padding: 80px 0;
+      background: url('https://media.istockphoto.com/id/2187108015/photo/old-vintage-airplane-with-propellers.jpg?s=612x612&w=0&k=20&c=hBrzrnN9xR-rCjZ4hwFE6uQuXTbgYofzqTmZ6C5vCWI=') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: #fff;
+    }
+
+    /* Overlay to make text readable */
+    .about-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(10, 10, 35, 0.7);
+      z-index: 1;
+    }
+
+    .about-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .about-section h2 {
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="{{ url_for('index') }}" class="logo">
+              <h4>RUL <span>Prediction</span></h4>
+            </a>
+            <ul class="nav">
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+              <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+              <li><a href="{{ url_for('register') }}">Register</a></li>
+              <li class="login-btn"><a href="{{ url_for('login') }}">Login</a></li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section with Background -->
+  <section class="about-section">
+    <div class="about-content">
+      <br><br>
+      <h2>About RUL Prediction Project</h2>
+      <p style="color: white; font-weight: bold; text-align: justify;">
+        The Remaining Useful Life (RUL) Prediction project uses advanced machine learning models to estimate the
+        operational lifespan of aeroengines. By analyzing historical engine data, sensor readings, and operational
+        conditions, it predicts when an engine may need maintenance or could fail. Accurate RUL prediction helps prevent
+        unexpected breakdowns, ensures safety, optimizes maintenance schedules, and reduces operational costs. The
+        system provides actionable insights for airlines, maintenance teams, and engineers. By integrating multiple
+        predictive models and continuously evaluating performance, this project delivers reliable, precise predictions
+        that enhance efficiency, improve decision-making, and support safer aviation operations, ultimately contributing
+        to optimized engine management and maintenance planning.
+      </p>
+
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2026 RUL Prediction Project. All Rights Reserved.
+  </footer>
+
+  <!-- Bootstrap & Template Scripts -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/owl-carousel.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/animation.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/imagesloaded.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+</body>
+
+</html>
